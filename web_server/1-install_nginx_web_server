@@ -7,5 +7,5 @@ sudo ufw allow 'Nginx HTTP'
 sudo mkdir -p /var/www/html
 sudo chown www-data:www-data /var/www/html
 sudo chmod 755 /var/www/html
-sudo echo "This is Alliance from Holberton School :)" | sudo tee /var/www/html/index.html > /dev/null
+sudo echo "Holberton School for the win!" | sudo tee /var/www/html/index.html > /dev/null
 sudo service nginx restart
