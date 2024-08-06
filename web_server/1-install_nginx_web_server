@@ -4,5 +4,8 @@
 sudo apt-get update
 sudo apt-get -y install nginx
 sudo ufw allow 'Nginx HTTP'
-sudo echo "This is Alliance from Holberton School :)" > /var/www/html/index.html
-sudo service nginx start
+sudo mkdir -p /var/www/html
+sudo chown www-data:www-data /var/www/html
+sudo chmod 755 /var/www/html
+sudo echo "This is Alliance from Holberton School :)" | sudo tee /var/www/html/index.html > /dev/null
+sudo service nginx restart
