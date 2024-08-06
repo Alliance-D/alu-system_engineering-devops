@@ -1,12 +1,41 @@
 #!/usr/bin/env bash
 # Script that configures a new Ubuntu machine with the following requirements:
 
+# Update package list and install Nginx
 sudo apt-get update
 sudo apt-get -y install nginx
+
+# Allow Nginx HTTP through the firewall
 sudo ufw allow 'Nginx HTTP'
+
+# Create a sample index.html file
 echo "This is Alliance from Holberton School :)" | sudo tee /var/www/html/index.html > /dev/null
 
-string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.github.com\/Alliance-D permanent;"
-sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+# Update the Nginx configuration to include a 301 redirect for /redirect_me
+# The configuration will use `tee` to ensure it is added correctly
+sudo tee /etc/nginx/sites-available/default > /dev/null <<EOL
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
+    root /var/www/html;
+    index index.html;
+
+    server_name _;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location /redirect_me {
+        return 301 https://www.github.com/Alliance-D;
+    }
+}
+EOL
+
+# Test the Nginx configuration for syntax errors
+sudo nginx -t
+
+# Restart Nginx to apply the changes
 sudo service nginx restart
+
