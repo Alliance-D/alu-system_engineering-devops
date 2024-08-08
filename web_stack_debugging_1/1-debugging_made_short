@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
-# is script that configures a server to listening on port 80 of all servers active IPv4 IPs
-sudo sed -i "s/8080/80/" /etc/nginx/sites-enabled/default
+# Update Nginx configuration to listen on port 80
+
+# Change port from 8080 to 80
+sudo sed -i "s/listen 8080;/listen 80;/" /etc/nginx/sites-enabled/default
+
+# Test Nginx configuration
+sudo nginx -t
+
+# Restart Nginx to apply the changes
 sudo service nginx restart
-echo "" | sudo dd status=none of=/run/nginx.pid
+
+# Stop Nginx to ensure it is not running
+sudo service nginx stop
